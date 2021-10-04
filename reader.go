@@ -29,9 +29,13 @@ func NewReader(r io.Reader) (*Reader, error) {
 		return nil, err
 	}
 
+	scanner := bufio.NewScanner(rc)
+	buf := make([]byte, 0, 1024*1024)
+	scanner.Buffer(buf, 1024*1024)
+
 	rdr := &Reader{
 		rc:      rc,
-		scanner: bufio.NewScanner(rc),
+		scanner: scanner,
 	}
 	rdr.scanner.Split(rdr.split)
 	return rdr, nil
